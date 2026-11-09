@@ -1,0 +1,24 @@
+id = "confirm-close-tab"
+name = "Confirm Close Tab"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Ask y/n before closing a tab. Bind a key to the action `confirm-close-tab.confirm-close-tab` (herdr plugins cannot bind keys themselves)."
+platforms = ["linux", "macos"]
+
+# Entry point for the keybinding. Actions run on the herdr server without a TTY,
+# so this only captures the tab that was focused when the key was pressed and
+# opens the prompt pane below with that tab id.
+[[actions]]
+id = "confirm-close-tab"
+title = "Close tab (with confirmation)"
+description = "Open a y/n prompt; close the tab that was focused on confirmation."
+contexts = ["workspace"]
+command = ["sh", "scripts/open.sh"]
+
+# The prompt itself: a real pane with a TTY, shown over the active pane.
+# It reads one key, acts, and exits.
+[[panes]]
+id = "confirm"
+title = "Close tab?"
+placement = "overlay"
+command = ["sh", "-c", "exec sh \"$HERDR_PLUGIN_ROOT/scripts/confirm.sh\""]
